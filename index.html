@@ -35,6 +35,34 @@ button,select,input{font:inherit;color:var(--tx)}
 .an p:not(.go)::before{content:"";display:inline-block;width:7px;height:7px;margin-right:9px;border-radius:50%;background:var(--gr);box-shadow:0 0 0 0 rgba(47,191,113,.7);animation:png 2s ease-out infinite}
 .an em{font:500 14px Oswald,sans-serif;font-style:normal;letter-spacing:.06em;color:var(--lv);background:linear-gradient(var(--lv),var(--lv)) no-repeat 0 100%/0 2px;padding-bottom:1px;animation:ul 3.2s ease-in-out infinite alternate}
 .play .an p{animation:ti .7s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(.45s + var(--k)*.18s)}
+.an{flex-direction:row;gap:16px}.an-l{flex:1 1 0;min-width:0;display:flex;flex-direction:column}.an .an-l .go{margin-top:6px}
+.an .lq{margin-top:6px;font-size:14px;line-height:1.35;font-weight:700}.an .lq .sh{background:linear-gradient(90deg,var(--mu),#fff,var(--mu)) 0 0/240px 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shim 3.4s linear infinite}.an .lq b{color:var(--rd);font-weight:800;animation:rf 2.2s ease-in-out infinite alternate}
+.an .gb{margin-top:7px;padding-top:6px;position:relative;font:700 11.5px/1.45 Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.an .gb::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--lv),#fff,var(--lv),transparent) 0 0/260px 1px;animation:shim 2.8s linear infinite}
+.an .gb span{display:block;background:linear-gradient(90deg,var(--lv),#fff,var(--lv)) 0 0/260px 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:shim 3.2s linear infinite}.an .gb span+span{animation-delay:-1.1s;animation-duration:4s}
+.an-r{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.ou{display:block;width:clamp(104px,14vh,140px);height:auto;aspect-ratio:1;filter:drop-shadow(0 0 6px rgba(217,69,90,.4)) drop-shadow(0 0 8px rgba(185,177,242,.25))}.ou .sn{transform-origin:50% 50%;animation:spin 18s linear infinite}.ou .ir{animation:ep 1.8s ease-in-out infinite alternate}
+.ou .ot{font:700 21px Oswald,sans-serif;letter-spacing:.06em;fill:var(--tx);animation:otp 3s ease-in-out infinite alternate}.ou .ot.b{fill:var(--lv);animation-delay:-1.5s}
+.an .ol{font:700 12px Oswald,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--rd);white-space:nowrap;animation:olp 2s ease-in-out infinite alternate}
+@keyframes shim{to{background-position:240px 0}}@keyframes rf{from{text-shadow:0 0 0 transparent}to{text-shadow:0 0 10px rgba(217,69,90,.9)}}
+@keyframes ep{to{fill:#ff6b7d}}@keyframes otp{from{opacity:.8}to{opacity:1;filter:drop-shadow(0 0 4px rgba(255,255,255,.85))}}
+@keyframes olp{from{text-shadow:0 0 2px rgba(217,69,90,.3);letter-spacing:.14em}to{text-shadow:0 0 12px rgba(217,69,90,.95);letter-spacing:.17em}}
+.play .an .lq,.play .an .gb,.play .an-r{animation:ti .7s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(.45s + var(--k)*.18s)}
+@media(max-width:560px){.an{flex-direction:column}.an-r{align-self:center}}
+.gr .pd{position:relative;overflow:hidden;isolation:isolate;transition:color .4s}
+.pd::before,.pd::after{content:"";position:absolute;z-index:-1;pointer-events:none}
+.pd[data-t=Morning],.pd[data-t=Evening],.pd[data-t=Night]{font-weight:700}
+.gr .pd[data-t=Morning]{background:linear-gradient(100deg,#ffe3b0,#ffd1d9 48%,#a8dcff);color:#2a2350}
+.pd[data-t=Morning]::before{inset:0 auto 0 0;width:200%;background:radial-gradient(ellipse 34px 9px at 12% 68%,rgba(255,255,255,.9),transparent 70%),radial-gradient(ellipse 44px 11px at 38% 30%,rgba(255,255,255,.9),transparent 70%),radial-gradient(ellipse 30px 8px at 64% 74%,rgba(255,255,255,.9),transparent 70%),radial-gradient(ellipse 40px 10px at 88% 36%,rgba(255,255,255,.9),transparent 70%);background-size:50% 100%;background-repeat:repeat-x;animation:dr 26s linear infinite}
+.pd[data-t=Morning]::after{left:16px;top:50%;width:24px;height:24px;margin-top:-12px;border-radius:50%;background:radial-gradient(circle,#fff7cf 30%,#ffc94d 75%);box-shadow:0 0 16px 6px rgba(255,200,80,.7);animation:sp 4s ease-in-out infinite alternate}
+.gr .pd[data-t=Evening]{background:linear-gradient(100deg,#3b2a6b,#c2456f 48%,#ff9a5c);color:#fff1e8}
+.pd[data-t=Evening]::before{inset:0 auto 0 0;width:200%;background:radial-gradient(ellipse 34px 9px at 12% 68%,rgba(60,20,70,.5),transparent 70%),radial-gradient(ellipse 44px 11px at 38% 30%,rgba(60,20,70,.5),transparent 70%),radial-gradient(ellipse 30px 8px at 64% 74%,rgba(60,20,70,.5),transparent 70%),radial-gradient(ellipse 40px 10px at 88% 36%,rgba(60,20,70,.5),transparent 70%);background-size:50% 100%;background-repeat:repeat-x;animation:dr 34s linear infinite}
+.pd[data-t=Evening]::after{right:20px;bottom:-14px;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,#ffe2a0,#ff7a3d);box-shadow:0 0 18px 7px rgba(255,120,60,.7);animation:ss 6s ease-in-out infinite alternate}
+.gr .pd[data-t=Night]{background:linear-gradient(100deg,#05071a,#141a45 60%,#1d1b50);color:var(--lv)}
+.pd[data-t=Night]::before{inset:0;background:radial-gradient(1px 1px at 8% 30%,#fff,transparent),radial-gradient(1px 1px at 17% 72%,#fff,transparent),radial-gradient(1px 1px at 29% 25%,#fff,transparent),radial-gradient(1px 1px at 38% 68%,#fff,transparent),radial-gradient(1px 1px at 52% 20%,#fff,transparent),radial-gradient(1px 1px at 61% 76%,#fff,transparent),radial-gradient(1px 1px at 70% 34%,#fff,transparent),radial-gradient(1px 1px at 79% 66%,#fff,transparent),radial-gradient(1px 1px at 90% 28%,#fff,transparent),radial-gradient(1px 1px at 95% 74%,#fff,transparent);animation:tw 2.6s ease-in-out infinite alternate}
+.pd[data-t=Night]::after{right:22px;top:50%;width:20px;height:20px;margin-top:-10px;border-radius:50%;box-shadow:inset -7px -2px 0 0 #f4f1ff,0 0 14px rgba(200,210,255,.45);animation:mf 5s ease-in-out infinite alternate}
+.pd[data-t=Morning] select{background:rgba(255,255,255,.78);color:#2a2350;border-color:rgba(42,35,80,.35)}.pd[data-t=Evening] select{background:rgba(40,12,50,.6);color:#fff;border-color:rgba(255,200,170,.5)}.pd[data-t=Night] select{background:rgba(5,7,26,.65)}
+@keyframes dr{to{transform:translateX(-50%)}}@keyframes sp{to{transform:scale(1.18)}}@keyframes ss{to{transform:translateY(7px)}}@keyframes tw{from{opacity:.35}to{opacity:1}}@keyframes mf{to{transform:translateY(3px)}}
 @keyframes ti{from{opacity:0;transform:translateX(-22px)}}
 @keyframes ul{to{background-size:100% 2px}}
 @keyframes png{to{box-shadow:0 0 0 9px rgba(47,191,113,0)}}
@@ -169,7 +197,7 @@ button,select,input{font:inherit;color:var(--tx)}
 <div class="st"><small>TOTAL SPENDING</small><b id="ssp">0</b><small>TOTAL SMOKING</small><b id="ssm">0</b></div>
 <div class="st sk"><div class="fire" aria-hidden="true">🔥</div><small>BEST STREAK</small><b id="sst">0</b><div class="dn rd"><svg width="66" height="66" viewBox="0 0 72 72"><defs><radialGradient id="dk" cx="40%" cy="35%" r="75%"><stop offset="0" stop-color="#2d2a52"/><stop offset="1" stop-color="#15132b"/></radialGradient></defs><circle cx="36" cy="36" r="30" fill="url(#dk)" stroke="#3b3862" stroke-width="5"/><circle id="rg" cx="36" cy="36" r="30" fill="none" stroke="#8b7cf6" stroke-width="5" stroke-linecap="round" style="stroke-dasharray:0 188.5;filter:drop-shadow(0 0 4px rgba(139,124,246,.8))"/></svg><b id="pc">0%</b><i class="ob"></i><i class="ob b"></i></div></div>
 </div></div>
-<div class="cd an" style="--i:2"><p class="h">Daily anchors</p><p style="--k:0"><strong>Busy day:</strong> minimum <em>30 min</em> code.</p><p style="--k:1"><strong>Normal day:</strong> minimum <em>90 to 120 min</em> code.</p><p class="go" style="--k:2"><strong>I can do it, I'm the best</strong></p></div>
+<div class="cd an" style="--i:2"><div class="an-l"><p class="h">Daily anchors</p><p style="--k:0"><strong>Busy day:</strong> minimum <em>30 min</em> code.</p><p style="--k:1"><strong>Normal day:</strong> minimum <em>90 to 120 min</em> code.</p><p class="go" style="--k:2"><strong>I can do it, I'm the best</strong></p><div class="lq" style="--k:3"><span class="sh">Lust is temporary &mdash;</span> <b>regret is forever.</b></div><div class="gb" style="--k:4"><span>Greatness is built, not given.</span><span>Discipline + Consistency + Hard work = Progress</span></div></div><div class="an-r" style="--k:5"><svg class="ou" viewBox="0 0 200 200" role="img" aria-label="The cycle ends here"><defs><linearGradient id="ouG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#f1ecff"/><stop offset="1" stop-color="#ff8795"/></linearGradient></defs><circle cx="100" cy="100" r="95" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="3" stroke-dasharray="1 4.969"/><g class="sn"><path d="M85.1 15.3 L76.8 17.2 L68.8 19.9 L61.2 23.4 L53.9 27.7 L47.0 32.6 L40.7 38.2 L35.0 44.3 L29.9 51.0 L25.5 58.2 L21.8 65.7 L18.9 73.6 L16.8 81.7 L15.5 90.0 L15.0 98.3 L15.3 106.7 L16.5 114.9 L18.4 123.0 L21.2 130.9 L24.7 138.4 L28.9 145.6 L33.8 152.3 L39.3 158.4 L45.4 164.0 L52.0 169.0 L59.1 173.3 L66.5 176.8 L74.3 179.6 L82.2 181.7 L90.4 182.9 L98.5 183.3 L106.7 183.0 L114.8 181.8 L122.7 179.8 L130.4 177.1 L137.8 173.6 L144.8 169.5 L151.3 164.7 L157.3 159.2 L162.8 153.2 L167.6 146.7 L171.7 139.8 L175.2 132.5 L177.9 125.0 L179.8 117.2 L181.0 109.2 L181.4 101.2 L181.0 93.2 L179.8 85.4 L177.9 77.6 L175.2 70.1 L171.7 63.0 L167.7 56.2 L162.9 49.8 L157.6 44.0 L151.7 38.7 L145.4 34.0 L138.6 30.0 L131.5 26.7 L124.1 24.1 L116.5 22.2 L115.9 25.2 L123.1 27.2 L130.1 30.0 L136.8 33.4 L143.1 37.4 L148.9 42.1 L154.2 47.2 L159.1 52.9 L163.3 59.0 L166.9 65.5 L169.8 72.3 L172.1 79.3 L173.6 86.5 L174.5 93.8 L174.6 101.1 L174.0 108.4 L172.7 115.6 L170.7 122.6 L168.0 129.4 L164.7 135.9 L160.7 142.0 L156.2 147.7 L151.2 152.9 L145.7 157.5 L139.7 161.7 L133.4 165.1 L126.8 168.0 L120.0 170.2 L113.0 171.7 L105.9 172.5 L98.7 172.6 L91.6 172.0 L84.6 170.8 L77.8 168.8 L71.2 166.2 L64.9 162.9 L58.9 159.1 L53.4 154.7 L48.3 149.8 L43.8 144.4 L39.8 138.6 L36.3 132.5 L33.6 126.0 L31.4 119.4 L29.9 112.5 L29.1 105.6 L29.0 98.6 L29.6 91.6 L30.8 84.8 L32.8 78.1 L35.3 71.6 L38.5 65.5 L42.2 59.6 L46.5 54.2 L51.3 49.2 L56.6 44.8 L62.3 40.8 L68.3 37.5 L74.6 34.7 L81.1 32.6 L87.8 31.1Z" fill="#0d0b1e" stroke="#fff" stroke-width="1.2"/><path d="M85.1 15.3 L77.1 17.1 L84.6 31.7ZM76.3 17.4 L68.6 20.0 L77.5 33.7ZM67.7 20.4 L60.3 23.8 L70.6 36.3ZM59.6 24.3 L52.6 28.5 L64.0 39.7ZM51.8 29.0 L45.4 33.9 L57.9 43.8ZM44.7 34.5 L38.8 40.1 L52.1 48.5ZM38.2 40.7 L32.9 46.9 L46.9 53.8ZM32.3 47.6 L27.8 54.3 L42.3 59.5ZM27.3 55.1 L23.4 62.2 L38.3 65.8ZM23.0 63.0 L20.0 70.5 L35.0 72.4ZM19.7 71.3 L17.4 79.1 L32.3 79.4ZM17.2 80.0 L15.7 87.9 L30.5 86.6ZM15.6 88.8 L15.0 96.8 L29.3 94.0ZM15.0 97.7 L15.3 105.8 L29.0 101.5ZM15.3 106.7 L16.4 114.6 L29.4 108.9ZM16.6 115.5 L18.5 123.3 L30.7 116.3ZM18.8 124.2 L21.5 131.7 L32.7 123.6ZM21.9 132.5 L25.4 139.7 L35.4 130.6ZM25.8 140.5 L30.1 147.3 L38.9 137.2ZM30.6 148.0 L35.5 154.3 L43.1 143.5ZM36.1 155.0 L41.7 160.7 L47.9 149.3ZM42.3 161.3 L48.4 166.4 L53.3 154.6ZM49.2 167.0 L55.8 171.4 L59.2 159.3ZM56.5 171.8 L63.6 175.5 L65.6 163.4ZM64.4 175.9 L71.8 178.8 L72.5 166.8ZM72.6 179.1 L80.2 181.2 L79.6 169.4ZM81.1 181.4 L88.9 182.8 L87.0 171.3ZM89.8 182.9 L97.7 183.3 L94.5 172.4ZM98.5 183.3 L106.4 183.0 L102.2 172.7ZM107.3 182.9 L115.1 181.7 L109.8 172.2ZM116.0 181.6 L123.6 179.6 L117.4 170.8ZM124.4 179.3 L131.8 176.5 L124.8 168.7ZM132.6 176.2 L139.6 172.7 L131.9 165.9ZM140.3 172.2 L146.9 168.0 L138.7 162.3ZM147.6 167.5 L153.7 162.6 L145.2 157.9ZM154.4 162.0 L159.9 156.5 L151.1 153.0ZM160.5 155.9 L165.4 149.8 L156.5 147.4ZM165.9 149.1 L170.2 142.6 L161.3 141.3ZM170.6 141.8 L174.1 134.9 L165.4 134.7ZM174.5 134.1 L177.3 126.9 L168.8 127.6ZM177.5 126.1 L179.5 118.6 L171.4 120.3ZM179.7 117.7 L180.9 110.1 L173.3 112.7ZM181.0 109.2 L181.4 101.5 L174.4 104.9ZM181.4 100.7 L181.0 93.0 L174.6 97.1ZM180.9 92.1 L179.6 84.5 L174.0 89.2ZM179.4 83.7 L177.4 76.3 L172.6 81.5ZM177.2 75.5 L174.4 68.3 L170.4 73.9ZM174.0 67.5 L170.5 60.7 L167.4 66.6ZM170.1 60.0 L165.9 53.6 L163.6 59.6ZM165.4 52.9 L160.5 47.1 L159.1 53.0ZM159.9 46.4 L154.5 41.1 L154.0 47.0ZM153.9 40.5 L147.9 35.8 L148.2 41.5ZM147.2 35.3 L140.8 31.3 L141.8 36.6ZM140.1 30.8 L133.3 27.5 L135.0 32.4Z" fill="url(#ouG)"/><path d="M76 23C77 12 90 6 106 7C116 8 122 11 126 15L106 23.5L124 31C120 34 112 36 104 36C90 37 77 33 76 23Z" fill="#0d0b1e" stroke="#fff" stroke-width="1.4"/><path d="M121 16.8L117.4 18.3L120 22.4ZM115.5 19.1L111.8 20.7L113.8 24.6ZM122.2 30.4L118.2 28.8L120.2 25.2ZM115.8 27.8L112 26.2L114 22.8Z" fill="#fff"/><path d="M80 20Q84 17 88 19M79 25Q84 22 89 24" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width=".9"/><path class="ey" d="M89 15Q96 9.5 103 15Q96 19.5 89 15Z" fill="#fff"/><circle class="ir" cx="96" cy="14.8" r="2.7" fill="#e0344c"/><ellipse cx="96" cy="14.8" rx=".8" ry="2.3" fill="#0b0a18"/></g><text class="ot" x="100" y="98" text-anchor="middle">THE CYCLE</text><text class="ot b" x="100" y="121" text-anchor="middle">ENDS HERE.</text></svg><div class="ol">Overcome your lust.</div></div></div>
 </div>
 <div class="r r2">
 <div class="cd" style="--i:3"><p class="h">Daily completion %</p><div class="cw ar" id="ar"></div></div>
@@ -188,7 +216,7 @@ const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+Stri
 let st=null;try{st=JSON.parse(localStorage.getItem("ht1"))}catch(e){}
 st=st||{n:5,h:[{i:1,n:"Daily Exercise",k:2},{i:2,n:"Coding",k:1},{i:3,n:"Reading",k:1},{i:4,n:"Digital Discipline",k:1}],from:iso(new Date()),d:{}};
 const mig=()=>{st.h.forEach(h=>{if(!h.k)h.k=h.i===1?2:1});if(!st.ord){const o=[2,3,4,1],q=h=>{const x=o.indexOf(h.i);return x<0?99:x};st.h.sort((a,b)=>q(a)-q(b));st.ord=1}};mig();
-const save=()=>{st.u=Date.now();try{localStorage.setItem("ht1",JSON.stringify(st))}catch(e){}dirty()};
+const save=()=>{try{localStorage.setItem("ht1",JSON.stringify(st))}catch(e){}dirty()};
 const now=new Date(),T0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
 let Y=now.getFullYear(),M=now.getMonth(),pt;
 const key=()=>Y+"-"+(M+1),dim=()=>new Date(Y,M+1,0).getDate();
@@ -225,7 +253,7 @@ function render(){
  $("#bs").innerHTML=b;
  const p2=n-15,sel=i=>`<select data-p="${i}" aria-label="Shift for period ${i+1}"><option value="">Shift</option>${["Morning","Evening","Night"].map(s=>`<option ${m.s[i]===s?"selected":""}>${s}</option>`).join("")}</select>`;
  const R=`<div class="gr" style="--n:${n}">`;let ri=0;
- let g=R+`<span></span><div class="pd" style="grid-column:span 15">PERIOD 1 &middot; DAY 1&ndash;15 ${sel(0)}</div><div class="pd" style="grid-column:span ${p2}">PERIOD 2 &middot; DAY 16&ndash;${n} ${sel(1)}</div><span></span></div>`;
+ let g=R+`<span></span><div class="pd" data-t="${m.s[0]||''}" style="grid-column:span 15">PERIOD 1 &middot; DAY 1&ndash;15 ${sel(0)}</div><div class="pd" data-t="${m.s[1]||''}" style="grid-column:span ${p2}">PERIOD 2 &middot; DAY 16&ndash;${n} ${sel(1)}</div><span></span></div>`;
  g+=R+`<span></span>`;for(let d=1;d<=n;d++)g+=`<span class="${isCur()&&d===now.getDate()?"td":""}">${WD[new Date(Y,M,d).getDay()]}<br><b>${d}</b></span>`;g+=`<span>TOTAL</span></div>`;
  st.h.forEach(h=>{ri++;let dn=0;const s=starts(h);g+=R+`<button class="hn" data-r="${h.i}" title="Tap to rename or delete">${esc(h.n)}${h.k>1?` <small>&middot; every ${h.k} days</small>`:""}</button>`;
   s.forEach(d=>{const e=Math.min(d+h.k-1,n),sp=e-d+1,x=bst(h,d);if(x==="d")dn++;const tdy=isCur()&&now.getDate()>=d&&now.getDate()<=e;g+=`<button class="c ${x}${h.k>1?" k":""}${tdy?" t":""}" style="grid-column:span ${sp};--j:${d};--r:${ri}" data-l="${sp>1?d+"&ndash;"+e:d}" data-h="${h.i}" data-d="${d}" aria-pressed="${x==="d"}" aria-label="${esc(h.n)}, ${MN[M]} ${sp>1?d+" to "+e:d}"></button>`});
@@ -245,7 +273,7 @@ document.addEventListener("click",e=>{
 document.addEventListener("change",e=>{
  const t=e.target;
  if(t.dataset.k){md().v[t.dataset.k][t.dataset.d]=t.value;save();totals()}
- else if(t.dataset.p!==undefined){md().s[+t.dataset.p]=t.value;save()}
+ else if(t.dataset.p!==undefined){md().s[+t.dataset.p]=t.value;t.closest(".pd").dataset.t=t.value;save()}
  else if(t.id==="fr"&&t.value){st.from=t.value;save();render()}
  else if(t.id==="fi"&&t.files[0]){t.files[0].text().then(x=>{try{const j=JSON.parse(x);if(j&&j.h&&j.d){st=j;mig();save();render();play()}else alert("Not a valid backup file.")}catch(err){alert("Not a valid backup file.")}})}
 });
@@ -385,70 +413,33 @@ function clouds(){
 clouds();bubbles();
 if(matchMedia("(pointer:fine)").matches&&!RM)addEventListener("pointermove",e=>{const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;document.querySelectorAll(".or").forEach((o,i)=>{const f=(i+1)*14;o.style.translate=`${-x*f}px ${-y*f}px`})},{passive:true});
 const LS=k=>{try{return localStorage.getItem(k)||""}catch(e){return""}},SS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
-let syT,held=false,busy=false,lastChk=0;
-const HOLD="Sync paused: Drive has newer data. Click Restore from Drive.";
-const cfg=()=>LS("ht_url")&&LS("ht_tok");
+let syT;
 const hasData=()=>Object.values(st.d).some(m=>Object.values(m.c||{}).some(s=>String(s).includes("1")));
-const fmtT=ms=>{const d=new Date(ms),t=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});return d.toDateString()===new Date().toDateString()?t:d.toLocaleDateString([],{day:"numeric",month:"short"})+" "+t};
-function setSy(t){const e=$("#sy");if(!e)return;const x=[t];if(cfg()){const l=+LS("ht_last");x.push(l?"Last synced: "+fmtT(l):"Never synced");if(LS("ht_dirty")==="1")x.push("unsynced changes")}e.textContent=x.join(" \u00b7 ")}
-function dirty(){SS("ht_dirty","1");if(cfg())setSy(held?HOLD:"Will sync in 4 sec");sched()}
-function sched(){clearTimeout(syT);if(!held&&cfg())syT=setTimeout(syncNow,4000)}
-function synced(sent,unconf){
- if(unconf){setSy("Sent to Drive (not confirmed), will verify on next open");return}
- SS("ht_base",sent);SS("ht_last",Date.now());
- if(st.u===sent){SS("ht_dirty","");setSy("Synced to Drive \u2713")}else{setSy("Synced to Drive \u2713");sched()}
-}
+function setSy(t){const e=$("#sy");if(e)e.textContent=t}
+function dirty(){SS("ht_dirty","1");sched()}
+function sched(){clearTimeout(syT);if(LS("ht_url")&&LS("ht_tok"))syT=setTimeout(syncNow,4000)}
 async function syncNow(){
- const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k||held||busy)return;
+ const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k)return;
  if(!hasData()){setSy("Cloud sync paused: no ticks yet. On a new device, use Restore from Drive first.");return}
- if(!st.u){st.u=Date.now();try{localStorage.setItem("ht1",JSON.stringify(st))}catch(e){}}
- busy=true;setSy("Syncing...");
- const sent=st.u,o={method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({token:k,base:+LS("ht_base")||0,data:st})};
- let again=false;
- try{const r=await fetch(u,o),j=await r.json();
-  if(j.ok)synced(sent);
-  else if(j.err==="conflict"){held=true;setSy(HOLD);again=true}
-  else setSy("Sync refused: "+(j.err||"check token"))}
- catch(e){try{await fetch(u,{...o,mode:"no-cors"});synced(sent,true)}catch(e2){setSy("Offline: will retry on your next tick or reopen")}}
- busy=false;if(again)await checkDrive();
+ setSy("Syncing...");
+ const o={method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({token:k,data:st})};
+ try{const r=await fetch(u,o),j=await r.json();if(j.ok){SS("ht_dirty","");setSy("Synced to Drive \u2713 "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}))}else setSy("Sync refused: "+(j.err||"check token"))}
+ catch(e){try{await fetch(u,{...o,mode:"no-cors"});SS("ht_dirty","");setSy("Sent to Drive (not confirmed). Check the HabitBackup folder once.")}catch(e2){setSy("Offline: will retry on your next tick or reopen.")}}
 }
-async function checkDrive(){
- const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k||busy)return;
- lastChk=Date.now();
- let j;try{const r=await fetch(u+"?token="+encodeURIComponent(k)+"&meta=1");j=await r.json()}
- catch(e){setSy("Could not reach Drive (offline?)");if(LS("ht_dirty")==="1")sched();return}
- if(!j.ok){
-  if(j.err==="no backup yet"){held=false;if(LS("ht_dirty")==="1")sched();else setSy("Cloud sync is on")}
-  else setSy("Drive check failed: "+(j.err||"unknown"));
-  return}
- const su=+j.u||0,base=+LS("ht_base")||0,dl=LS("ht_dirty")==="1";
- if(su&&su===(st.u||0)){SS("ht_base",su);SS("ht_dirty","");held=false;setSy("Up to date with Drive");return}
- const newer=su>base||(!hasData()&&j.has);
- if(!newer){held=false;if(dl)sched();else setSy("Up to date with Drive");return}
- held=true;clearTimeout(syT);setSy(HOLD);
- const when=j.t?fmtT(Date.parse(j.t)):"";
- const msg=(hasData()?"Drive has newer data"+(when?" (saved "+when+")":"")+".":"This browser has no data, but Drive has a backup.")+(dl?"\n\nWarning: this browser has unsynced changes. Restoring will lose them (use Export backup first if needed).":"")+"\n\nRestore from Drive now?";
- if(confirm(msg))await doRestore(true);
-}
-async function doRestore(skip){
- const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k){alert("Set up Cloud sync first.");return}
- if(!skip&&!confirm("Replace the data in this browser with the latest copy from Drive?"))return;
- try{const r=await fetch(u+"?token="+encodeURIComponent(k)),j=await r.json();
-  if(j&&j.ok&&j.data&&j.data.h&&j.data.d){st=j.data;mig();SS("ht1",JSON.stringify(st));SS("ht_dirty","");SS("ht_base",st.u||0);SS("ht_last",Date.now());held=false;clearTimeout(syT);render();play();setSy("Restored from Drive \u2713")}
-  else alert("Drive said: "+((j&&j.err)||"no backup found"))}
- catch(e){alert("Could not read from Drive here. Download latest.json from the HabitBackup folder and use Import backup.")}
-}
-$("#cs").onclick=async()=>{
+$("#cs").onclick=()=>{
  const u=prompt("Paste your Apps Script Web App URL (ends with /exec). Leave empty to turn sync off.",LS("ht_url"));if(u===null)return;
- if(!u.trim()){SS("ht_url","");SS("ht_tok","");held=false;clearTimeout(syT);setSy("Cloud sync is off. Export a backup now and then.");return}
+ if(!u.trim()){SS("ht_url","");SS("ht_tok","");setSy("Cloud sync is off. Export a backup now and then.");return}
  if(!/^https:\/\/script\.google\.com\//.test(u.trim())){alert("That does not look like an Apps Script URL.");return}
  const k=prompt("Paste your secret token",LS("ht_tok"));if(!k)return;
- SS("ht_url",u.trim());SS("ht_tok",k.trim());held=false;setSy("Cloud sync is on");
- await checkDrive();
- if(!held&&hasData()&&(LS("ht_dirty")==="1"||!LS("ht_base")))syncNow()};
-$("#rs").onclick=()=>doRestore(false);
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&cfg()&&Date.now()-lastChk>60000)checkDrive()});
-if(cfg()){setSy("Cloud sync is on");checkDrive()}
+ SS("ht_url",u.trim());SS("ht_tok",k.trim());setSy("Cloud sync is on.");if(hasData())syncNow()};
+$("#rs").onclick=async()=>{
+ const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k){alert("Set up Cloud sync first.");return}
+ if(!confirm("Replace the data in this browser with the latest copy from Drive?"))return;
+ try{const r=await fetch(u+"?token="+encodeURIComponent(k)),j=await r.json();
+  if(j&&j.ok&&j.data&&j.data.h&&j.data.d){st=j.data;mig();SS("ht1",JSON.stringify(st));SS("ht_dirty","");render();play();setSy("Restored from Drive \u2713")}
+  else alert("Drive said: "+((j&&j.err)||"no backup found"))}
+ catch(e){alert("Could not read from Drive here. Download latest.json from the HabitBackup folder and use Import backup.")}};
+if(LS("ht_url")&&LS("ht_tok")){setSy("Cloud sync is on.");if(LS("ht_dirty")==="1")sched()}
 render();play();
 </script>
 </body>
