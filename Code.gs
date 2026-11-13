@@ -33,24 +33,48 @@ function out_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
 
+// true only if at least one habit box is ticked (same rule as the page)
+function hasTicks_(d) {
+  if (!d || !d.d || typeof d.d !== 'object') return false;
+  return Object.values(d.d).some(m =>
+    Object.values((m && m.c) || {}).some(s => String(s).indexOf('1') !== -1));
+}
+
+function readLatest_(f) {
+  try { return JSON.parse(f.getBlob().getDataAsString()); } catch (e) { return null; }
+}
+
 function ok_(t) {
   return t && t === PropertiesService.getScriptProperties().getProperty('TOKEN');
 }
 
 // Page -> Drive
 function doPost(e) {
+  const lock = LockService.getScriptLock();
   try {
+    lock.waitLock(10000); // two requests at the same time cannot race
     const body = JSON.parse(e.postData.contents);
     if (!ok_(body.token)) return out_({ ok: false, err: 'bad token' });
     const d = body.data;
-    if (!d || !Array.isArray(d.h) || !d.d) return out_({ ok: false, err: 'bad data' });
+    if (!d || !Array.isArray(d.h) || !d.d || typeof d.d !== 'object') return out_({ ok: false, err: 'bad data' });
+
+    // Guard 1: never let empty data overwrite the backup
+    if (!hasTicks_(d)) return out_({ ok: false, err: 'empty data refused' });
 
     const f = folder_();
     const cur = find_(f, LATEST);
     const tz = Session.getScriptTimeZone();
 
-    // One rollback copy per day, made before the first overwrite of that day
     if (cur) {
+      // Guard 2: Drive has a newer version than the one this browser last saw -> refuse
+      const old = readLatest_(cur);
+      const driveU = (old && Number(old.u)) || 0;
+      const base = Number(body.base) || 0;
+      if (driveU > base && Number(d.u) !== driveU) {
+        return out_({ ok: false, err: 'conflict', u: driveU });
+      }
+
+      // One rollback copy per day, made before the first overwrite of that day
       const dn = 'daily-' + Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd') + '.json';
       if (!find_(f, dn)) cur.makeCopy(dn, f);
       prune_(f);
@@ -58,18 +82,25 @@ function doPost(e) {
 
     const txt = JSON.stringify(d);
     if (cur) cur.setContent(txt); else f.createFile(LATEST, txt, MimeType.PLAIN_TEXT);
-    return out_({ ok: true, t: new Date().toISOString() });
+    return out_({ ok: true, t: new Date().toISOString(), u: Number(d.u) || 0 });
   } catch (err) {
     return out_({ ok: false, err: String(err) });
+  } finally {
+    try { lock.releaseLock(); } catch (x) {}
   }
 }
 
-// Drive -> page (Restore button)
+// Drive -> page (Restore button), or ?meta=1 for a cheap "what version is on Drive" check
 function doGet(e) {
   if (!ok_(e.parameter.token)) return out_({ ok: false, err: 'bad token' });
   const cur = find_(folder_(), LATEST);
   if (!cur) return out_({ ok: false, err: 'no backup yet' });
-  return out_({ ok: true, data: JSON.parse(cur.getBlob().getDataAsString()) });
+  const data = readLatest_(cur);
+  if (!data) return out_({ ok: false, err: 'backup unreadable' });
+  if (e.parameter.meta) {
+    return out_({ ok: true, u: Number(data.u) || 0, has: hasTicks_(data), t: cur.getLastUpdated().toISOString() });
+  }
+  return out_({ ok: true, data: data });
 }
 
 // Keep only the newest KEEP_DAILY rollback copies
