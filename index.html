@@ -188,7 +188,7 @@ const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+Stri
 let st=null;try{st=JSON.parse(localStorage.getItem("ht1"))}catch(e){}
 st=st||{n:5,h:[{i:1,n:"Daily Exercise",k:2},{i:2,n:"Coding",k:1},{i:3,n:"Reading",k:1},{i:4,n:"Digital Discipline",k:1}],from:iso(new Date()),d:{}};
 const mig=()=>{st.h.forEach(h=>{if(!h.k)h.k=h.i===1?2:1});if(!st.ord){const o=[2,3,4,1],q=h=>{const x=o.indexOf(h.i);return x<0?99:x};st.h.sort((a,b)=>q(a)-q(b));st.ord=1}};mig();
-const save=()=>{try{localStorage.setItem("ht1",JSON.stringify(st))}catch(e){}dirty()};
+const save=()=>{st.u=Date.now();try{localStorage.setItem("ht1",JSON.stringify(st))}catch(e){}dirty()};
 const now=new Date(),T0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
 let Y=now.getFullYear(),M=now.getMonth(),pt;
 const key=()=>Y+"-"+(M+1),dim=()=>new Date(Y,M+1,0).getDate();
@@ -385,33 +385,70 @@ function clouds(){
 clouds();bubbles();
 if(matchMedia("(pointer:fine)").matches&&!RM)addEventListener("pointermove",e=>{const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;document.querySelectorAll(".or").forEach((o,i)=>{const f=(i+1)*14;o.style.translate=`${-x*f}px ${-y*f}px`})},{passive:true});
 const LS=k=>{try{return localStorage.getItem(k)||""}catch(e){return""}},SS=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
-let syT;
+let syT,held=false,busy=false,lastChk=0;
+const HOLD="Sync paused: Drive has newer data. Click Restore from Drive.";
+const cfg=()=>LS("ht_url")&&LS("ht_tok");
 const hasData=()=>Object.values(st.d).some(m=>Object.values(m.c||{}).some(s=>String(s).includes("1")));
-function setSy(t){const e=$("#sy");if(e)e.textContent=t}
-function dirty(){SS("ht_dirty","1");sched()}
-function sched(){clearTimeout(syT);if(LS("ht_url")&&LS("ht_tok"))syT=setTimeout(syncNow,4000)}
-async function syncNow(){
- const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k)return;
- if(!hasData()){setSy("Cloud sync paused: no ticks yet. On a new device, use Restore from Drive first.");return}
- setSy("Syncing...");
- const o={method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({token:k,data:st})};
- try{const r=await fetch(u,o),j=await r.json();if(j.ok){SS("ht_dirty","");setSy("Synced to Drive \u2713 "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}))}else setSy("Sync refused: "+(j.err||"check token"))}
- catch(e){try{await fetch(u,{...o,mode:"no-cors"});SS("ht_dirty","");setSy("Sent to Drive (not confirmed). Check the HabitBackup folder once.")}catch(e2){setSy("Offline: will retry on your next tick or reopen.")}}
+const fmtT=ms=>{const d=new Date(ms),t=d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});return d.toDateString()===new Date().toDateString()?t:d.toLocaleDateString([],{day:"numeric",month:"short"})+" "+t};
+function setSy(t){const e=$("#sy");if(!e)return;const x=[t];if(cfg()){const l=+LS("ht_last");x.push(l?"Last synced: "+fmtT(l):"Never synced");if(LS("ht_dirty")==="1")x.push("unsynced changes")}e.textContent=x.join(" \u00b7 ")}
+function dirty(){SS("ht_dirty","1");if(cfg())setSy(held?HOLD:"Will sync in 4 sec");sched()}
+function sched(){clearTimeout(syT);if(!held&&cfg())syT=setTimeout(syncNow,4000)}
+function synced(sent,unconf){
+ if(unconf){setSy("Sent to Drive (not confirmed), will verify on next open");return}
+ SS("ht_base",sent);SS("ht_last",Date.now());
+ if(st.u===sent){SS("ht_dirty","");setSy("Synced to Drive \u2713")}else{setSy("Synced to Drive \u2713");sched()}
 }
-$("#cs").onclick=()=>{
+async function syncNow(){
+ const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k||held||busy)return;
+ if(!hasData()){setSy("Cloud sync paused: no ticks yet. On a new device, use Restore from Drive first.");return}
+ if(!st.u){st.u=Date.now();try{localStorage.setItem("ht1",JSON.stringify(st))}catch(e){}}
+ busy=true;setSy("Syncing...");
+ const sent=st.u,o={method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({token:k,base:+LS("ht_base")||0,data:st})};
+ let again=false;
+ try{const r=await fetch(u,o),j=await r.json();
+  if(j.ok)synced(sent);
+  else if(j.err==="conflict"){held=true;setSy(HOLD);again=true}
+  else setSy("Sync refused: "+(j.err||"check token"))}
+ catch(e){try{await fetch(u,{...o,mode:"no-cors"});synced(sent,true)}catch(e2){setSy("Offline: will retry on your next tick or reopen")}}
+ busy=false;if(again)await checkDrive();
+}
+async function checkDrive(){
+ const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k||busy)return;
+ lastChk=Date.now();
+ let j;try{const r=await fetch(u+"?token="+encodeURIComponent(k)+"&meta=1");j=await r.json()}
+ catch(e){setSy("Could not reach Drive (offline?)");if(LS("ht_dirty")==="1")sched();return}
+ if(!j.ok){
+  if(j.err==="no backup yet"){held=false;if(LS("ht_dirty")==="1")sched();else setSy("Cloud sync is on")}
+  else setSy("Drive check failed: "+(j.err||"unknown"));
+  return}
+ const su=+j.u||0,base=+LS("ht_base")||0,dl=LS("ht_dirty")==="1";
+ if(su&&su===(st.u||0)){SS("ht_base",su);SS("ht_dirty","");held=false;setSy("Up to date with Drive");return}
+ const newer=su>base||(!hasData()&&j.has);
+ if(!newer){held=false;if(dl)sched();else setSy("Up to date with Drive");return}
+ held=true;clearTimeout(syT);setSy(HOLD);
+ const when=j.t?fmtT(Date.parse(j.t)):"";
+ const msg=(hasData()?"Drive has newer data"+(when?" (saved "+when+")":"")+".":"This browser has no data, but Drive has a backup.")+(dl?"\n\nWarning: this browser has unsynced changes. Restoring will lose them (use Export backup first if needed).":"")+"\n\nRestore from Drive now?";
+ if(confirm(msg))await doRestore(true);
+}
+async function doRestore(skip){
+ const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k){alert("Set up Cloud sync first.");return}
+ if(!skip&&!confirm("Replace the data in this browser with the latest copy from Drive?"))return;
+ try{const r=await fetch(u+"?token="+encodeURIComponent(k)),j=await r.json();
+  if(j&&j.ok&&j.data&&j.data.h&&j.data.d){st=j.data;mig();SS("ht1",JSON.stringify(st));SS("ht_dirty","");SS("ht_base",st.u||0);SS("ht_last",Date.now());held=false;clearTimeout(syT);render();play();setSy("Restored from Drive \u2713")}
+  else alert("Drive said: "+((j&&j.err)||"no backup found"))}
+ catch(e){alert("Could not read from Drive here. Download latest.json from the HabitBackup folder and use Import backup.")}
+}
+$("#cs").onclick=async()=>{
  const u=prompt("Paste your Apps Script Web App URL (ends with /exec). Leave empty to turn sync off.",LS("ht_url"));if(u===null)return;
- if(!u.trim()){SS("ht_url","");SS("ht_tok","");setSy("Cloud sync is off. Export a backup now and then.");return}
+ if(!u.trim()){SS("ht_url","");SS("ht_tok","");held=false;clearTimeout(syT);setSy("Cloud sync is off. Export a backup now and then.");return}
  if(!/^https:\/\/script\.google\.com\//.test(u.trim())){alert("That does not look like an Apps Script URL.");return}
  const k=prompt("Paste your secret token",LS("ht_tok"));if(!k)return;
- SS("ht_url",u.trim());SS("ht_tok",k.trim());setSy("Cloud sync is on.");if(hasData())syncNow()};
-$("#rs").onclick=async()=>{
- const u=LS("ht_url"),k=LS("ht_tok");if(!u||!k){alert("Set up Cloud sync first.");return}
- if(!confirm("Replace the data in this browser with the latest copy from Drive?"))return;
- try{const r=await fetch(u+"?token="+encodeURIComponent(k)),j=await r.json();
-  if(j&&j.ok&&j.data&&j.data.h&&j.data.d){st=j.data;mig();SS("ht1",JSON.stringify(st));SS("ht_dirty","");render();play();setSy("Restored from Drive \u2713")}
-  else alert("Drive said: "+((j&&j.err)||"no backup found"))}
- catch(e){alert("Could not read from Drive here. Download latest.json from the HabitBackup folder and use Import backup.")}};
-if(LS("ht_url")&&LS("ht_tok")){setSy("Cloud sync is on.");if(LS("ht_dirty")==="1")sched()}
+ SS("ht_url",u.trim());SS("ht_tok",k.trim());held=false;setSy("Cloud sync is on");
+ await checkDrive();
+ if(!held&&hasData()&&(LS("ht_dirty")==="1"||!LS("ht_base")))syncNow()};
+$("#rs").onclick=()=>doRestore(false);
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&cfg()&&Date.now()-lastChk>60000)checkDrive()});
+if(cfg()){setSy("Cloud sync is on");checkDrive()}
 render();play();
 </script>
 </body>
